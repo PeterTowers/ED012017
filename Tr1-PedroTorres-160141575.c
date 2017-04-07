@@ -6,7 +6,7 @@
  * Matrícula: 16/0141575
  * Matéria: Estrutura de Dados, turma B
  * Data de criação do código: 02/04/2017
- * Editado em: ; 
+ * Editado em: 05/04/17, 06/04/17, 07/04/17; 
  * 
 */
 
