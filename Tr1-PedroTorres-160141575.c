@@ -183,8 +183,17 @@ void batalha (void) {   /* Funcao batalha: executa todos os passos do jogo */
             
     }
     
-    free(player1);  /* Libera a memoria alocada */
+    free(player1);  /* Processo para liberar a memoria alocada */
     free(player2);
+    
+    for (i = 0; i < colunas; i++) {
+        for (j = 0; j < linhas; j++) {
+            free(player1[i][j]);
+            free(player2[i][j]); }
+        
+        free(player1[i]);
+        free(player2[i]);
+    }               /* Fim do processo de liberacao de memoria */
     
     if (lifepl1 > lifepl2)                                  /* Testa qual jogador venceu e imprime uma mensagem de vitoria */
         printf("\n\nParabens Player 1! Voce venceu!\n");
