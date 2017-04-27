@@ -1,6 +1,7 @@
-/* Hello world */
+/* Hello world v2.0
+ * Agora, em portugues. */
 #include <stdio.h>
 
 int main() {
-  printf("Hello, world!\n");
+  printf("Ola, mundo!\n");
 return(0); }
