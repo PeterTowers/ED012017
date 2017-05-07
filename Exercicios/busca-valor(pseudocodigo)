@@ -1,0 +1,23 @@
+Função busca-valor
+
+Recebe: vetor com dados do tipo inteiro (vetor), tamanho do vetor (tamanho) e o valor desejado (valor).
+Retorna: nada.
+
+Variáveis necessárias: flag (inteira), i (inteira), 
+
+Defina o valor de flag = 0.
+
+Para valores de i = 0 até i < tamanho, com incremento unitário, faça:
+
+    Caso o valor de (vetor[i]) seja igual à (valor), então:
+        Imprimir: "O elemento (valor) está na posiçao (i) do vetor."
+        Defina o valor de flag = 1
+    Fim da condição se/então
+
+Fim do laço de repetição
+
+Caso o valor de (flag) seja igual a 0, então:
+    Imprimir: "O elemento (valor) que você procura não está contido no vetor."
+Fim da condição se/então
+
+Fim da função busca-valor

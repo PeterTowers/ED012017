@@ -1,4 +1,4 @@
-/* Programa alocDin
+/* Programa Calcula Media
  * 
  * Este programa recebe um número de elementos definido pelo usuário, e calcula a média deles.
  * 
@@ -21,7 +21,7 @@ int main(void) {    /* Funcao principal */
     
     int num;    /* Recebe o numero total de dados */
     
-    printf("\nBem vindo ao programa alocDin!\nEste programa calcula a media de uma amostra de dados.\n\n"); /* Mensagem de boas vindas */
+    printf("\nBem vindo ao programa Calcula Media!\nEste programa calcula a media de uma amostra de dados.\n\n"); /* Mensagem de boas vindas */
     
     printf("Qual eh o tamanho de sua amostra?\t");  /* Recebe o tamanho da amostra */
     scanf("%i", &num);
