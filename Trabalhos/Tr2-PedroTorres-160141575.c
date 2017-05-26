@@ -18,42 +18,43 @@
 #include <string.h>
 
 /* ---Variaveis globais---*/
-#define MAX_N 51
-#define MAX_E 31
-#define MAX_F 21
+#define MAX_N 51    /*Tamanho da string que armazena o nome dos contatos*/
+#define MAX_E 31    /*Tamanho da string que armazena o e-mail dos contatos*/
+#define MAX_F 21    /*Tamanho da string que armazena o telefone dos contatos*/
 
 /* ---Registros--- */
-typedef struct end {
-    char nome[MAX_N];
-    char email[MAX_E];
-    char fone[MAX_F];
+typedef struct end {    /*Registro da lista para armazenar os contatos*/
+    char nome[MAX_N];   /*String para armazenar o nome dos contatos*/
+    char email[MAX_E];  /*String para armazenar o e-mail dos contatos*/
+    char fone[MAX_F];   /*String para armazenar o telefone dos contatos*/
     
-    struct end* prox;
-} Contato;
+    struct end* prox;   /*Ponteiro que aponta para o proximo elemento da lista*/
+} Contato;              /*Fim do tipo de variavel 'Contato'*/
 
 /* ---Funcoes--- */
 int teste(int var, int isso, int aquilo, int tipo);         /*Testa a validade da entrada do usuario de acordo com os parametros passados para a funcao*/
 
-void interface(void);
-void imprimir(struct end *p, int tipo);
-void buscar(struct end *p);
+void interface(void);                       /*Recebe uma entrada do usuario e o direciona para as demais funcoes*/
+void imprimir(struct end *p, int tipo);     /*Imprime todos os contatos ou um contato especifico, de acordo com o parametro 'tipo'*/
+void buscar(struct end *p);                 /*Imprime na tela um contato especifico*/
 
-struct end *inserir(struct end *p);
-struct end *ordenaEntrada(struct end *p, struct end *novo);
-struct end *seekndestroy(struct end *p, char *p_nom, int tipo); /*Busca elementos na lista e os destroi. Ou nao, dependendo do parametro tipo passado para a funcao...*/
-struct end *editar(struct end *p);
-struct end *remover(struct end *p);
+struct end *inserir(struct end *p);                                         /*Insere novos contatos na agenda*/
+struct end *ordenaEntrada(struct end *p, struct end *novo, int tipo);       /*Coloca os elementos da lista em ordem alfabetica*/
+struct end *seekndestroy(struct end *p, char *p_nom, int tipo);             /*Busca elementos na lista e os destroi. Ou nao, dependendo do parametro tipo passado para a funcao...*/
+struct end *editar(struct end *p);                                          /*Permite a edicao de um contato*/
+struct end *remover(struct end *p);                                         /*Remove um contato da lista*/
 
+/* ---Funcao principal--- */
 int main(void) {
     
     printf("\nBem vindo ao programa Agendanator A-1000!\nEste programa funciona como a sua agenda eletronica pessoal, permitindo que voce\nguarde o nome, e-mail e telefone de seus contatos ");
-    printf("e os resgate com facilidade\nquando precisar. Caso prefira, tambem podera remover algum contato indesejado de\nsua agenda.\n");
+    printf("e os resgate com facilidade\nquando precisar. Caso prefira, tambem podera remover algum contato indesejado de\nsua agenda.\n"); /*Mensagem de boas vindas*/
     
-    interface();
+    interface();    /*Chama a funcao interface*/
     
-    printf("\nObrigado por usar o Agendanator A-1000!\n");
+    printf("\nObrigado por usar o Agendanator A-1000!\n"); /*Mensagem de saida*/
     
-return(0); }
+return(0); }    /* -----Fim da funcao principal----- */
 
 int teste(int var, int isso, int aquilo, int tipo) {   /*Testa a validade da entrada do usuario (var) de acordo com os parametros passados para a funcao ('isso' e 'aquilo'), permitindo correcao*/ 
                                                         /*e retorna o valor da variavel para a funcao*/
@@ -69,163 +70,185 @@ int teste(int var, int isso, int aquilo, int tipo) {   /*Testa a validade da ent
             scanf("%i", &var); }
     }
     
-return(var); }  /* -----Fim da funcao teste----- */
+return(var);    /*Retorna um valor aceitavel para a variavel*/ }    /* -----Fim da funcao teste----- */
 
-void interface(void) {  /*Funcao interface: */
-    int entrada = -1;
-    struct end *p = NULL;
+void interface(void) {  /*Funcao interface: recebe a entrada do usuario e o direciona para as demais funcoes*/
+    int entrada = -1;       /*Variavel para receber a entrada do usuario*/
+    struct end *p = NULL;   /*Ponteiro para armazenar o endereco do primeiro elemento da lista*/
     
-    while (entrada != 0) {
+    while (entrada != 0) {  /*Laco de repeticao da funcao*/
         printf("\nO que deseja fazer?\n1. Inserir um contato\t2. Listar todos os contatos\n3. Buscar um contato\t4. Editar um contato\n5. Remover um contato\n\n0. Sair\n");
-        scanf("%i", &entrada);
+        scanf("%i", &entrada);  /*Pergunta ao usuario o que ele deseja fazer*/
         
-        entrada = teste(entrada, 0, 5, 2);
+        entrada = teste(entrada, 0, 5, 2);  /* Testa a validade da entrada do usuario */
         
-        if (entrada == 1)
-            p = inserir(p);
-        else if (entrada == 2)
-            imprimir(p, 1);
-        else if (entrada == 3)
-            buscar(p);
-        else if (entrada == 4)
-            p = editar(p);
-        else if (entrada == 5)
-            p = remover(p);
-        else {
-            printf("Deseja realmente sair? (1. Sim | 0. Nao)\n");
+        if (entrada == 1)       /*O usuario deseja inserir um novo contato a agenda*/
+            p = inserir(p);         /*Chamada da funcao inserir, registrando a posicao do primeiro elemento da lista*/
+        
+        else if (entrada == 2)  /*O usuario deseja listar todos os contatos*/
+            imprimir(p, 1);         /*Chamada da funcao imprimir*/
+        
+        else if (entrada == 3)  /*O usuario deseja listar um contato especifico*/
+            buscar(p);              /*Chamada da funcao buscar*/
+        
+        else if (entrada == 4)  /*O usuario deseja editar um contato*/
+            p = editar(p);          /*Chamada da funcao editar, registrando a posicao do primeiro elemento da lista*/
+        
+        else if (entrada == 5)  /*O usuario deseja remover um contato*/
+            p = remover(p);         /*Chamada da funcao remover, registrando a posicao do primeiro elemento da lista*/
+        
+        else {                  /*O usuario deseja sair do programa*/
+            printf("Deseja realmente sair? (1. Sim | 0. Nao)\n");   /*Confirma se o usuario quer mesmo sair do programa*/
             scanf("%i", &entrada);
             
-            teste(entrada, 0, 1, 1);
+            teste(entrada, 0, 1, 1);    /* Testa a validade da entrada do usuario */
             
-            if (entrada == 1)
+            if (entrada == 1)   /*Se desejar sair, quebra o laco*/
                 break;
-            else
+            else                /*Caso contrario, define 'entrada' como -1 para se manter no laco*/
                 entrada = -1;
         }
-    }
-} /* -----Fim da funcao interface----- */
 
-struct end *inserir(struct end *p) {    /*Funcao inserir: */
-    int entrada, destino, c;
+        if (entrada != 2)
+            for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
+                putchar('\n');
+    }                       /*Fim do laco de repeticao*/
+}   /* -----Fim da funcao interface----- */
+
+struct end *inserir(struct end *p) {    /*Funcao inserir: insere novos contatos na agenda e retorna a posicao do primeiro elemento da lista*/
+    int entrada, destino;    /*Declara as variaveis entrada (recebe a entrada do usuario), destino (roda o laco para inserir os dados do contato)*/
     
-    for (entrada = 0; entrada < 100; entrada++)
-        printf("\n");
+    for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
+        putchar('\n');
     
-    printf("Deseja inserir um novo contato? (1. Sim | 0. Nao)\n");
+    printf("Deseja inserir um novo contato? (1. Sim | 0. Nao)\n");  /*Confirma a opcao do usuario*/
     scanf("%i", &entrada);
     
-    entrada = teste(entrada, 0, 1, 1);
+    entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
     
-    while (entrada != 0) {
-        Contato *novo;
-        novo = malloc(sizeof(Contato));
-        novo->prox = NULL;
-        destino = -1;
+    while (entrada != 0) {  /*Laco para a insercao de novos contatos*/
+        Contato *novo;                  /*Cria um ponteiro para o novo contato*/
+        novo = malloc(sizeof(Contato)); /*Aloca a memoria para o novo contato criado*/
+        novo->prox = NULL;              /*Define o endereco do proximo elemento da lista como NULL, por padrao*/
+        destino = -1;                   /*Atribui o valor -1 a variavel para efeitos do proximo laco*/
         
-        while (entrada != 0) {
-            int i;
-            if (destino == -1 || destino == 1) {
-                entrada = 0;
+        while (entrada != 0) {  /*Laco para a atribuicao de dados do registro*/
+            int i;  /*Variavel de contagem*/
+            
+            if (destino == -1 || destino == 1) {    /*O valor -1 faz com que o laco passe, pelo menos, uma vez nessa condicional, permitindo ao usuario inserir o nome do contato ou voltar aqui...*/
+                entrada = 0;                        /*... para corrigi-lo. O valor de entrada e redefinido para 0 para permitir a entrada no laco a seguir*/
                 
-                while (entrada != 1) {
+                while (entrada != 1) {  /*Laco que recebe o nome do novo contato e permite correcao*/
                     printf("Qual eh o nome do contato? (Max.: %i caracteres)\n", MAX_N-1);
-                    c = getchar();
-                    fgets(novo->nome, MAX_N, stdin);
+                    novo->nome[0] = getchar();          /*Recebe o caractere de quebra de linha que fica na heap*/
+                    fgets(novo->nome, MAX_N, stdin);    /*Recebe o nome do novo contato, sobrescrevendo o caractere quebra de linha que foi recebido na linha anterior*/
                     
-                    for (i = 0; (novo->nome[i] != '\n') && (novo->nome[i] != '\0'); i++)
-                        ;
-                    novo->nome[i] = '\0';
+                    for (i = 0; (novo->nome[i] != '\n') && (novo->nome[i] != '\0'); i++)    /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                        ;                                                                   /*A condicao envolvendo '\0' eh por seguranca*/
+                    novo->nome[i] = '\0';   /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
             
-                    printf("\nO nome: '%s' esta correto?\n(1. Sim | 0. Nao)\n", novo->nome);
+                    printf("\nO nome: '%s' esta correto?\n(1. Sim | 0. Nao)\n", novo->nome);    /*Confirma a entrada do usuario, permitindo correcao*/
                     scanf("%i", &entrada);
                     
-                    entrada = teste(entrada, 0, 1, 1);
+                    entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
                 }
-                if (destino < 0)
+                if (destino < 0)    /*Ajusta a variavel destino, caso ela seja < 0, para a proxima iteracao do laco de repeticao*/
                     destino--;
             }
-            else if (destino == -2 || destino == 2) {
-                entrada = 0;
+            else if (destino == -2 || destino == 2) {   /*Gracas ao ajuste anterior, o valor -2 faz com que o laco passe, pelo menos, uma vez nessa condicional, permitindo ao usuario inserir o...*/
+                entrada = 0;                            /*...e-mail do contato ou voltar aqui para corrigi-lo. O valor de entrada e redefinido para 0 para permitir a entrada no laco a seguir*/
                 
-                while (entrada != 1) {
+                while (entrada != 1) {  /*Laco que recebe o e-mail do novo contato e permite correcao*/
                     printf("Qual eh o e-mail do contato? (Max.: %i caracteres)\n", MAX_E-1);
-                    c = getchar();
-                    fgets(novo->email, MAX_E, stdin);
+                    novo->email[0] = getchar();         /*Recebe o caractere de quebra de linha que fica na heap*/
+                    fgets(novo->email, MAX_E, stdin);   /*Recebe o e-mail do novo contato, sobrescrevendo o caractere quebra de linha que foi recebido na linha anterior*/
                     
-                    for (i = 0; (novo->email[i] != '\n') && (novo->email[i] != '\0'); i++ )
-                            ;
-                    novo->email[i] = '\0';
+                    for (i = 0; (novo->email[i] != '\n') && (novo->email[i] != '\0'); i++ ) /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                        ;                                                                   /*A condicao envolvendo '\0' eh por seguranca*/
+                    novo->email[i] = '\0';  /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
                     
-                    printf("\nO e-mail: '%s' esta correto? (1. Sim | 0. Nao)\n", novo->email);
+                    printf("\nO e-mail: '%s' esta correto? (1. Sim | 0. Nao)\n", novo->email);  /*Confirma a entrada do usuario, permitindo correcao*/
                     scanf("%i", &entrada);
                     
-                    entrada = teste(entrada, 0, 1, 1);
+                    entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
                 }
-                if (destino < 0)
+                if (destino < 0)    /*Ajusta a variavel destino, caso ela seja < 0, para a proxima iteracao do laco de repeticao*/
                     destino--;
             }
-            else if (destino == -3 || destino == 3) {
-                entrada = 0;
+            else if (destino == -3 || destino == 3) {   /*Novamente, o ajuste faz com que o laco passe, pelo menos, uma vez nessa condicional, permitindo ao usuario inserir o telefone do contato*/
+                entrada = 0;                            /*...ou voltar aqui para corrigi-lo. O valor de entrada e redefinido para 0 para permitir a entrada no laco a seguir*/
                 
-                while (entrada != 1) {
+                while (entrada != 1) {  /*Laco que recebe o telefone do novo contato e permite correcao*/
                     printf("Qual eh o numero de telefone do contato? (Max.: %i caracteres)\n", MAX_F-1);
-                    c = getchar();
-                    fgets(novo->fone, MAX_E, stdin);
+                    novo->fone[0] = getchar();          /*Recebe o caractere de quebra de linha que fica na heap*/
+                    fgets(novo->fone, MAX_E, stdin);    /*Recebe o e-mail do novo contato, sobrescrevendo o caractere quebra de linha que foi recebido na linha anterior*/
                     
-                    for (i = 0; (novo->fone[i] != '\n') && (novo->fone[i] != '\0'); i++)
-                            ;
-                    novo->fone[i] = '\0';
+                    for (i = 0; (novo->fone[i] != '\n') && (novo->fone[i] != '\0'); i++)    /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                        ;                                                                   /*A condicao envolvendo '\0' eh por seguranca*/
+                    novo->fone[i] = '\0';   /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
             
-                    printf("\nO numero: '%s' esta correto? (1. Sim | 0. Nao)\n", novo->fone);
+                    printf("\nO numero: '%s' esta correto? (1. Sim | 0. Nao)\n", novo->fone);   /*Confirma a entrada do usuario, permitindo correcao*/
                     scanf("%i", &entrada);
                     
-                    entrada = teste(entrada, 0, 1, 1);
+                    entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
                 }
-                if (destino < 0)
-                    destino = 4;
+                if (destino < 0)    /*Ajusta a variavel destino, caso ela seja < 0, para a proxima iteracao do laco de repeticao, que agora caira em apenas um dos campos, caso necessario, a...*/
+                    destino = 4;    /*...pedido do usuario*/
             }
-            if (destino > 0) {
+            if (destino > 0) {  /*Imprime os dados do novo contato na tela, apenas depois de ja ter recebido todos eles*/
                 printf("\n-----------------------------Novo contato-----------------------------\n");
                 printf("Nome:\t%s\nE-mail:\t%s\nTelefone: %s", novo->nome, novo->email, novo->fone);
                 printf("\n----------------------------------------------------------------------\n");
                 
-                printf("\nOs dados do contato estao corretos? (1. Sim | 0. Nao)\n");
+                printf("\nOs dados do contato estao corretos? (1. Sim | 0. Nao)\n");    /*Confirma a corretude dos dados*/
                 scanf("%i", &entrada);
                 
-                entrada = teste(entrada, 0, 1, 1);
+                entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
                 
-                if (entrada == 1)
+                if (entrada == 1)   /*Caso os dados estejam corretos, sai do laco*/
                     break;
                 
-                else {
-                    entrada = -1;
+                else {              /*Caso contrario, pergunta o que deseja corrigir e manda para a condicional correspondente*/
+                    entrada = -1;   /*Atribuicao para manter-se no laco*/
                     
                     printf("O que deseja corrigir? (1. Nome | 2. E-mail | 3. Telefone)\n");
                     scanf("%i", &destino);
                     
-                    destino = teste(destino, 1, 3, 2); }
+                    destino = teste(destino, 1, 3, 2);  /* Testa a validade da entrada do usuario */
+                }
             }
-        }
-        p = ordenaEntrada(p, novo);
+        }   /*Fim do laco para a atribuicao de dados do registro*/
+        p = ordenaEntrada(p, novo, 1); /*Chama a funcao ordenaEntrada para colocar a lista em ordem alfabetica, atualizando o vetor do primeiro elemento*/
     
-        printf("\nDeseja inserir outro contato? (1. Sim | 0. Nao)\n");
+        printf("\nDeseja inserir outro contato? (1. Sim | 0. Nao)\n");  /*Pergunta se o usuario deseja inserir outro contato*/
         scanf("%i", &entrada);
         
-        entrada = teste(entrada, 0, 1, 1);
+        entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
+    }   /*Fim do laco para a insercao de novos contatos*/
+    
+return(p);  /*Retorna o vetor para o primeiro elemento*/ }  /* -----Fim da funcao inserir-----*/
+
+struct end *ordenaEntrada(struct end *p, struct end *novo, int tipo) {  /*Funcao ordenaEntrada: coloca os elementos da lista em ordem alfabetica. Recebe p: 1o elemento; novo: elemento a ser...*/
+                                                                        /*...ordenado. Caso tipo == 2, o elemento ja existe na lista e precisa, ou nao, ser realocado.*/
+    int flag = 0;   /*Declara uma flag que sera condicao de saida dos lacos utilizados*/
+    
+    if (p == novo) {    /*Se o elemento a ser ordenado (novo) eh o primeiro elemento da lista, define o elemento seguinte ao 'novo' como o primeiro da lista*/
+        p = p->prox;
+        flag = 1;       /*Atribui o valor 1 a flag para que o procedimento relativo ao tipo 2 nao seja executado*/
     }
     
-return(p); }
-
-struct end *ordenaEntrada(struct end *p, struct end *novo) {    /*Funcao ordenaEntrada: coloca os elementos da lista em ordem alfabetica. Recebe p: 1o elemento; novo: elemento a ser ordenado*/
-    
-    if (p != NULL) {    /*Se existir um primeiro elemento da lista*/
-        int i, flag = 0;            /*Declara a variavel de contagem i, e uma flag que sera condicao de saida dos lacos utilizados*/
-        struct end *p_aux, *p_ant;  /*Declara dois ponteiros para elementos da lista: p_aux eh o elemento atual e p_ant eh o anterior ao p_aux*/
+    if (p != NULL) {    /*Testa se a lista possui ou nao elementos e, se possui:*/
+        int i;                          /*Declara a variavel de contagem i*/
+        struct end *p_aux = p, *p_ant;  /*Declara dois ponteiros para elementos da lista: p_aux eh o elemento atual e p_ant eh o anterior ao p_aux*/
         
-        if ( (p == novo) && (p->prox != NULL) )
-            p = p->prox;
-        
-        p_aux = p;
+        if (tipo == 2 && flag == 0) {   /*TIPO 2: caso a chamada seja feita pela funcao editar, "remove" o elemento 'novo' da lista para fazer as proximas comparacoes novamente*/
+            while (p_aux->prox != novo) /*Laco para encontrar o elemento que aponta para o elemento 'novo'*/
+                p_aux = p_aux->prox;
+            
+            p_aux->prox = novo->prox;   /*Define que o o elemento que apontava para 'novo' agora aponta para o elemento seguinte ao 'novo'*/
+            p_aux = p;                  /*Reatribui o valor do ponteiro p para o ponteiro auxiliar*/
+        }
+        flag = 0;   /*Atribui o novo valor a flag para garantir a entrada no proximo laco*/
         
         while (flag == 0) { /*Laco para a ordenacao*/
             if (novo->nome[0] > p_aux->nome[0]) {   /*Se o primeiro caractere do nome do novo for "maior" que o do elemento atual*/
@@ -274,10 +297,10 @@ struct end *ordenaEntrada(struct end *p, struct end *novo) {    /*Funcao ordenaE
             }
         }   /*Fim do laco de ordenacao*/
     }
-    else    /*Se nao existir um primeiro elemento da lista*/
+    else    /*Se a lista nao possui elementos*/
         p = novo;   /*Registra o novo elemento como o primeiro*/
     
-return(p);  /*Retorna a posicao do primeiro elemento da lista*/} /* -----Fim da funcao ordenaEntrada----- */
+return(p);  /*Retorna a posicao do primeiro elemento da lista*/ }   /* -----Fim da funcao ordenaEntrada----- */
 
 void imprimir(struct end *p, int tipo) {  /*Funcao imprimir: imprime (tipo == 1) todos os elementos da lista (p eh o 1o elemento da lista); ou o elemento p recebido. */
     if (p != NULL) {
@@ -289,8 +312,6 @@ void imprimir(struct end *p, int tipo) {  /*Funcao imprimir: imprime (tipo == 1)
                 p = p->prox;     /*Ajuste da posicao na lista*/
             }
             printf("------------------------------------------------------------\n");
-            printf("Aperte 'Enter' para voltar ao menu anterior.\n");
-            tipo = getchar();
         }
         else {
             printf("------------------------------------------------------------\n");
@@ -302,69 +323,72 @@ void imprimir(struct end *p, int tipo) {  /*Funcao imprimir: imprime (tipo == 1)
         printf("Voce nao possui contatos na sua agenda.\n");
 }   /* -----Fim da funcao imprimir----- */
 
-void buscar(struct end *p) {
-    int entrada;
+void buscar(struct end *p) {    /*Funcao buscar: busca um contato pelo nome e imprime seus dados na tela, se ele existir*/
+    int entrada;    /*Variavel para receber a entrada do usuario*/
     
-    if (p != NULL) {
-        int i;
-        char c, procurado[MAX_N], *p_nom = &procurado[0];
-        struct end *p_aux;
+    if (p != NULL) {    /*Caso a lista nao esteja vazia*/
+        int i;              /*Variavel de contagem*/
+        char procurado[MAX_N], *p_nom = &procurado[0]; /*Declara um vetor de char para armazenar o nome do contato procurado e um ponteiro para seu primeiro elemento*/
+        struct end *p_aux;  /*Declara um ponteiro auxiliar para a lista*/
         
-        printf("\nDeseja buscar um contato? (1. Sim | 0. Nao)\n");
+        for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
+            putchar('\n');
+        
+        printf("\nDeseja buscar um contato? (1. Sim | 0. Nao)\n");  /* Confirma a opcao do usuario*/
         scanf("%i", &entrada);
         
-        entrada = teste(entrada, 0, 1, 1);
+        entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
         
-        while (entrada != 0) {
-            entrada = 0;
-            while (entrada != 1) {
+        while (entrada != 0) {  /*Laco para executar as buscas*/
+            entrada = 0;    /*Atribuicao de valor para entrar na clausula seguinte*/
+            
+            while (entrada != 1) {  /*Laco para receber o nome do contato procurado*/
                 printf("Qual eh o nome do contato que voce busca? (Max.: %i caracteres)\n", MAX_N-1);
-                c = getchar();
-                fgets(procurado, MAX_N, stdin);
+                procurado[0] = getchar();       /*Recebe o caractere de quebra de linha que fica na heap*/
+                fgets(procurado, MAX_N, stdin); /*Recebe o nome do contato procurado, sobrescrevendo o caractere anterior*/
             
-                for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)
-                    ;
-                procurado[i] = '\0';
+                for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)  /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                    ;                                                               /*A condicao envolvendo '\0' eh por seguranca*/
+                procurado[i] = '\0';    /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
             
-                printf("O nome '%s' esta correto? (1. Sim | 0. Nao)\n", procurado);
+                printf("O nome '%s' esta correto? (1. Sim | 0. Nao)\n", procurado); /*Confirma o nome procurado e permite correcao*/
                 scanf("%i", &entrada);
             
-                entrada = teste(entrada, 0, 1, 1);
+                entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
             }
             
-            p_aux = seekndestroy(p, p_nom, 1);
+            p_aux = seekndestroy(p, p_nom, 1);  /*Chama a funcao seekndestroy em modo de busca para procurar o contato em questao*/
             
-            if (p_aux != NULL)
-                imprimir(p_aux, 2);
+            if (p_aux != NULL)  /*Se o contato estiver na lista*/
+                imprimir(p_aux, 2); /*Chama a funcao de impressao para imprimi-lo*/
             
-            else
+            else                /*Caso o contato nao esteja na lista, informa o usuario*/
                 printf("O contato buscado nao esta na agenda.\n");
             
-            printf("Deseja buscar outro contato? (1. Sim | 0. Nao)\n");
+            printf("Deseja buscar outro contato? (1. Sim | 0. Nao)\n"); /*Pergunta se o usuario deseja buscar outro contato*/
             scanf("%i", &entrada);
             
-            entrada = teste(entrada, 0, 1, 1);
-        }
-        
+            entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
+        }   /*Fim do laco de buscas*/
     }
-    else
+    else    /*Caso a lista esteja vazia, informa o usuario*/
         printf("Voce nao possui contatos na sua agenda.\n");
     
-    printf("Aperte 'Enter' para voltar ao menu principal.\n");
-    entrada = getchar();
+    printf("Aperte 'Enter' para voltar ao menu principal.\n");  /*Permite o usuario controlar o momento que ele deseja sair da funcao*/
+    entrada = getchar();    /*Recebe a quebra de linha armazenada na heap*/
     entrada = getchar();
 }   /* -----Fim da funcao buscar----- */
 
 struct end *seekndestroy(struct end *p, char *p_nom, int tipo) {    /*Funcao seekndestroy: Busca um elemento e o destroi caso tipo == 2; caso tipo == 1, retorna sua posicao sem maiores danos*/
-    struct end *p_aux = p, *p_ant = p_aux; /*Ponteiro auxiliares para guardar o elemento atual e o anterior a esse*/
+    struct end *p_aux = p, *p_ant = p_aux; /*Ponteiros auxiliares para guardar o elemento atual e o anterior a esse*/
     
     while (p_aux != NULL) { /*Laco para varrer toda a lista*/
         if (strcmp(p_aux->nome, p_nom) == 0) {  /*Se o elemento da lista atual for o elemento procurado*/
             
-            if (tipo == 1)          /*Caso seja apenas busca, retorna seu endereco de memoria, indicando sucesso*/
+            if (tipo == 1)          /*TIPO 1: Apenas busca, retorna seu endereco de memoria, indicando sucesso*/
                 return(p_aux);
             
-            else if (tipo == 2) {   /*Caso seja exigida sua remocao*/
+            else if (tipo == 2) {   /*TIPO 2: Remocao*/
                 if (p_ant != p_aux) {   /*Testa se NAO eh o primeiro elemento da lista*/
                     p_ant->prox = p_aux->prox;  /*Registra o endereco do proximo elemento da lista no campo adequado do elemento anterior (com relacao ao atual (p_aux))*/
                     free(p_aux);                /*Libera a memoria alocada*/
@@ -383,54 +407,57 @@ struct end *seekndestroy(struct end *p, char *p_nom, int tipo) {    /*Funcao see
 /*Caso nao encontre o elemento procurado, retorna NULL, indicando que o elemento nao existe na lista */
 return(NULL); } /* -----Fim da funcao seekndestroy----- */
 
-struct end *editar (struct end *p) {
-    int entrada;
+struct end *editar (struct end *p) {    /*Funcao editar: permite a edicao de um ou mais contatos, retornando o ponteiro para o primeiro elemento da lista*/
+    int entrada;    /*Variavel para armazenar a entrada do usuario*/
     
-    if (p != NULL) {
-        int i;
-        char c, procurado[MAX_N], *p_nom = &procurado[0];
-        struct end *p_aux;
+    if (p != NULL) {    /*Caso a lista nao esteja vazia*/
+        int i;              /*Variavel de contagem*/
+        char procurado[MAX_N], *p_nom = &procurado[0];  /*Declara um vetor de char para armazenar o nome do contato a ser editado e um ponteiro para o seu primeiro elemento*/
+        struct end *p_aux;  /*Declara um ponteiro auxliar para a lista*/
         
-        printf("\nDeseja editar um contato? (1. Sim | 0. Nao)\n");
+        for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
+            putchar('\n');
+        
+        printf("\nDeseja editar um contato? (1. Sim | 0. Nao)\n");  /*Confirma a opcao do usuario*/
         scanf("%i", &entrada);
         
-        entrada = teste(entrada, 0, 1, 1);
+        entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
         
-        while (entrada != 0) {
-            printf("Qual o nome do contato que voce deseja editar? (Max.: %i caracteres)\n", MAX_N-1);
-            c = getchar();
-            fgets(procurado, MAX_N, stdin);
+        while (entrada != 0) {  /*Laco para a edicao de contatos*/
+            printf("Qual o nome do contato que voce deseja editar? (Max.: %i caracteres)\n", MAX_N-1); /*Pergunta o nome do contato a ser editado*/
+            procurado[0] = getchar();       /*Recebe o caractere de quebra de linha que fica na heap*/
+            fgets(procurado, MAX_N, stdin); /*Recebe o nome do contato a ser editado, sobrescrevendo o caractere acima*/
             
-            for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)
-                ;
-            procurado[i] = '\0';
+            for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)  /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                ;                                                               /*A condicao envolvendo '\0' eh por seguranca*/
+            procurado[i] = '\0';    /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
             
-            p_aux = seekndestroy(p, p_nom, 1);
+            p_aux = seekndestroy(p, p_nom, 1);  /*Chama a funcao seekndestroy em modo de busca e armazena o ponteiro retornado no auxiliar*/
             
-            if (p_aux != NULL) {
-                while (entrada != 0) {
-                    imprimir(p_aux, 2);
+            if (p_aux != NULL) {    /*Se o contato buscado existir*/
+                while (entrada != 0) {  /*Laco para a edicao dos dados do contato*/
+                    imprimir(p_aux, 2); /*Chama a funcao 'imprimir' para imprimir os dados do contato em questao*/
                     
-                    printf("O que voce deseja editar?\n1. Nome\t    2. E-mail\t  3. Telefone\t0. Nada\n");
+                    printf("O que voce deseja editar?\n1. Nome\t    2. E-mail\t  3. Telefone\t0. Nada\n");  /*Pergunta qual campo o usuario deseja editar*/
                     scanf("%i", &entrada);
                     
-                    entrada = teste(entrada, 0, 3, 2);
+                    entrada = teste(entrada, 0, 3, 2);  /* Testa a validade da entrada do usuario */
                     
-                    if (entrada == 1) {
+                    if (entrada == 1) {         /* ----Edicao do nome---- */
                         printf("Qual o novo nome do contato? (Max.: %i caracteres)\n", MAX_N-1);
-                        c = getchar();
-                        fgets(p_aux->nome, MAX_N, stdin);
+                        p_aux->nome[0] = getchar();         /*Recebe o caractere de quebra de linha que fica na heap*/
+                        fgets(p_aux->nome, MAX_N, stdin);   /*Recebe o novo nome do contato, sobrescrevendo o caractere acima*/
                         
-                        for (i = 0; (p_aux->nome[i] != '\n') && (p_aux->nome[i] != '\0'); i++)
-                            ;
-                        p_aux->nome[i] = '\0';
+                        for (i = 0; (p_aux->nome[i] != '\n') && (p_aux->nome[i] != '\0'); i++)  /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na...*/
+                            ;                                                                   /*...string. A condicao envolvendo '\0' eh por seguranca*/
+                        p_aux->nome[i] = '\0';  /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
                         
-                        p = ordenaEntrada(p, p_aux);
+                        p = ordenaEntrada(p, p_aux, 2);    /*Chama a funcao ordenaEntrada para colocar o elemento de volta na lista em ordem alfabetica, recebendo o vetor para o primeiro elemento*/
                     }
-                    else if (entrada == 2) {
+                    else if (entrada == 2) {    /* ----Edicao de e-mail---- */
                         printf("Qual o novo e-mail do contato? (Max.: %i caracteres)\n", MAX_E-1);
-                        c = getchar();
-                        fgets(p_aux->email, MAX_E, stdin);
+                        p_aux->email[0] = getchar();        /*Recebe o caractere de quebra de linha que fica na heap*/
+                        fgets(p_aux->email, MAX_E, stdin);  /*Recebe o novo e-mail do contato, sobrescrevendo o caractere acima*/
                         
                         for (i = 0; (p_aux->email[i] != '\n') && (p_aux->email[i] != '\0'); i++)
                             ;
@@ -438,154 +465,100 @@ struct end *editar (struct end *p) {
                     }
                     else if (entrada == 3) {
                         printf("Qual o novo telefone do contato? (Max.: %i caracteres)\n", MAX_F-1);
-                        c = getchar();
-                        fgets(p_aux->fone, MAX_F, stdin);
+                        p_aux->fone[0] = getchar();         /*Recebe o caractere de quebra de linha que fica na heap*/
+                        fgets(p_aux->fone, MAX_F, stdin);   /*Recebe o novo telefone do contato, sobrescrevendo o caractere acima*/
                         
-                        for (i = 0; (p_aux->fone[i] != '\n') && (p_aux->fone[i] != '\0'); i++)
-                            ;
-                        p_aux->fone[i] = '\0';
+                        for (i = 0; (p_aux->fone[i] != '\n') && (p_aux->fone[i] != '\0'); i++)  /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na...*/
+                            ;                                                                   /*...string. A condicao envolvendo '\0' eh por seguranca*/
+                        p_aux->fone[i] = '\0';  /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
                     }
-                }
+                }   /*Fim do laco para edicao dos dados*/
             }
-            else 
+            else                    /*Caso o contato nao esteja na lista, informa o usuario*/
                 printf("O contato procurado nao esta na agenda.\n");
             
-            printf("Deseja editar outro contato? (1. Sim | 0. Nao)\n");
+            printf("Deseja editar outro contato? (1. Sim | 0. Nao)\n"); /*Pergunta se o usuario deseja editar outro contato*/
             scanf("%i", &entrada);
             
-            entrada = teste(entrada, 0, 1, 1);
+            entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
         }
     }
-    else
+    else    /*Caso a lista esteja vazia, informa o usuario*/
         printf("Voce nao possui contatos na sua agenda.\n");
     
-    printf("Aperte 'Enter' para voltar ao menu principal.\n");
+    printf("Aperte 'Enter' para voltar ao menu principal.\n");  /*Permite o usuario controlar o momento que ele deseja sair da funcao*/
+    entrada = getchar();    /*Recebe a quebra de linha armazenada na heap*/
     entrada = getchar();
-    entrada = getchar();
-return(p); }   /* -----Fim da funcao editar----- */
+return(p);  /*Retorna o ponteiro para o primeiro elemento da lista*/ }  /* -----Fim da funcao editar----- */
 
-struct end *remover(struct end *p) {
-    int entrada;
+struct end *remover(struct end *p) {    /*Funcao remover: Procura um usuario e o remove caso necessario. Retorna o ponteiro para o primeiro elemento da lista*/
+    int entrada;    /*Variavel para receber entradas do usuario*/
     
-    if (p != NULL) {
-        int i;
-        char c, procurado[MAX_N], *p_nom = &procurado[0];
-        struct end *p_aux;
+    if (p != NULL) {    /*Caso a lista nao esteja vazia*/
+        int i;              /*Variavel de contagem*/
+        char procurado[MAX_N], *p_nom = &procurado[0];  /*Declara um vetor de caracteres e um ponteiro para o primeiro elemento do vetor*/
+        struct end *p_aux;  /*Ponteiro auxiliar para lista*/
         
-        printf("Deseja remover um contato? (1. Sim | 0. Nao)\n");
+        for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
+            putchar('\n');
+        
+        printf("Deseja remover um contato? (1. Sim | 0. Nao)\n");   /*Confirma a opcao do usuario*/
         scanf("%i", &entrada);
         
-        entrada = teste(entrada, 0, 1, 1);
+        entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
         
-        while (entrada != 0) {
-            entrada = 0;
+        while (entrada != 0) {  /*Laco para busca e remocao de contato*/
+            entrada = 0;    /*Atribuicao para entrar na proxima condicao*/
             
-            while (entrada != 1) {
+            while (entrada != 1) {  /*Laco para receber nome do contato a ser removido*/
                 printf("Qual o nome do contato que voce deseja remover? (Max.: %i caracteres)\n", MAX_N-1);
-                c = getchar();
-                fgets(procurado, MAX_N, stdin);
+                procurado[0] = getchar();       /*Recebe o caractere de quebra de linha que fica na heap*/
+                fgets(procurado, MAX_N, stdin); /*Recebe o nome do contato a ser removido, sobrescrevendo o caractere acima*/
                 
-                for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)
-                    ;
-                procurado[i] = '\0';
+                for (i = 0; (procurado[i] != '\n') && (procurado[i] != '\0'); i++)  /*Laco para remover a entrada de uma quebra de linha que a funcao fgets() recebe e armazena na string.*/
+                    ;                                                               /*A condicao envolvendo '\0' eh por seguranca*/
+                procurado[i] = '\0';    /*Atribui o valor de "fim de string" no lugar da quebra de linha*/
             
-                printf("O nome '%s' esta correto? (1. Sim | 0. Nao)\n", procurado);
+                printf("O nome '%s' esta correto? (1. Sim | 0. Nao)\n", procurado); /*Confirma se o nome entrado esta correto*/
                 scanf("%i", &entrada);
                 
-                entrada = teste(entrada, 0, 1, 1);
+                entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
             }
-            p_aux = seekndestroy(p, p_nom, 1);
+            p_aux = seekndestroy(p, p_nom, 1);  /*Chama a funcao seekndestroy em modo de busca e armazena o ponteiro retornado no auxiliar*/
             
-            if (p_aux != NULL) {
-                imprimir(p_aux, 2);
+            if (p_aux != NULL) {    /*Se o contato procurado existir*/
+                imprimir(p_aux, 2); /*Chama a funcao 'imprimir' para imprimir seus dados na tela*/
                 
-                printf("Deseja REALMENTE excluir o contato em questao? Esse processo nao pode ser\nrevertido. (1. Sim | 0. Nao)\n");
+                printf("Deseja REALMENTE excluir o contato em questao? Esse processo nao pode ser\nrevertido. (1. Sim | 0. Nao)\n");    /*Confirma a opcao do usuario*/
                 scanf("%i", &entrada);
             
-                entrada = teste(entrada, 0, 1, 1);
+                entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
                 
-                if (entrada == 1) {
+                if (entrada == 1) { /*Se o usuario desejar, remove o contato em questao da agenda e informa o usuario do sucesso da operacao*/
                     p = seekndestroy(p, p_nom, 2);
                     printf("\nO contato '%s' foi removido da agenda.\n", procurado);
                 }
             }
-            else
+            else                    /*Caso o contato procurado nao esteja na lista, informa o usuario*/
                 printf("O contato buscado nao esta na agenda.\n");
             
-            if (p == NULL) {
-                printf("Voce nao possui mais contatos em sua agenda.\n");
-                break;
+            if (p == NULL) {    /*Caso todos os contatos sejam excluidos da agenda*/
+                printf("Voce nao possui mais contatos em sua agenda.\n");   /*Informa a situacao para o usuario*/
+                break;  /*Sai do laco para evitar erros de leitura de memoria*/
             }
-            else {
+            else {              /*Caso ainda hajam contatos, sugere a exclusao de mais alguns*/
                 printf("Deseja remover outro contato? (1. Sim | 0. Nao)\n");
                 scanf("%i", &entrada);
             
-                entrada = teste(entrada, 0, 1, 1);
+                entrada = teste(entrada, 0, 1, 1);  /* Testa a validade da entrada do usuario */
             }
-        }
+        }   /*Fim do laco para busca e remocao*/
     }
-    else
+    else                /*Caso a lista esteja vazia, informa o usuario*/
         printf("Voce nao possui contatos na sua agenda.\n");
     
-    printf("Aperte 'Enter' para voltar ao menu principal.\n");
+    printf("Aperte 'Enter' para voltar ao menu principal.\n");  /*Dá ao usuario a ilusão de que ele controla a máquina*/
+    entrada = getchar();    /*Recebe a quebra de linha armazenada na heap*/
     entrada = getchar();
-    entrada = getchar();
     
-return(p); }    /* -----Fim da funcao remover----- */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+return(p);  /*Retorna o ponteiro para o primeiro elemento da lista*/ }  /* -----Fim da funcao remover----- */
