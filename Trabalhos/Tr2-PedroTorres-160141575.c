@@ -8,7 +8,7 @@
  * Matrícula: 16/0141575
  * Matéria: Estrutura de Dados, turma B
  * Data de criação do código: 21/05/2017
- * Editado em: 22/05, 23/05;
+ * Editado em: 22/05, 23/05, 26/05;
  * 
 */
 
@@ -73,8 +73,8 @@ int teste(int var, int isso, int aquilo, int tipo) {   /*Testa a validade da ent
 return(var);    /*Retorna um valor aceitavel para a variavel*/ }    /* -----Fim da funcao teste----- */
 
 void interface(void) {  /*Funcao interface: recebe a entrada do usuario e o direciona para as demais funcoes*/
-    int entrada = -1;       /*Variavel para receber a entrada do usuario*/
-    struct end *p = NULL;   /*Ponteiro para armazenar o endereco do primeiro elemento da lista*/
+    int entrada = -1;               /*Variavel para receber a entrada do usuario*/
+    struct end *p = NULL, *p_aux;   /*Ponteiro para armazenar o endereco do primeiro elemento da lista*/
     
     while (entrada != 0) {  /*Laco de repeticao da funcao*/
         printf("\nO que deseja fazer?\n1. Inserir um contato\t2. Listar todos os contatos\n3. Buscar um contato\t4. Editar um contato\n5. Remover um contato\n\n0. Sair\n");
@@ -113,6 +113,12 @@ void interface(void) {  /*Funcao interface: recebe a entrada do usuario e o dire
             for (entrada = 0; entrada < 80; entrada++) /*Laco para inserir uma serie de quebras de linha e "limpar" a tela*/
                 putchar('\n');
     }                       /*Fim do laco de repeticao*/
+    
+    p_aux = p;
+    while (p_aux != NULL) { /*Laco para liberar a memoria alocada*/
+        p_aux = p->prox;
+        free(p);
+    }   /*Fim do laco*/
 }   /* -----Fim da funcao interface----- */
 
 struct end *inserir(struct end *p) {    /*Funcao inserir: insere novos contatos na agenda e retorna a posicao do primeiro elemento da lista*/
