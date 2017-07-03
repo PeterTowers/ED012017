@@ -33,7 +33,7 @@ struct Navio Embarc[] = {           /* Atribuicao dos valores para a estrutura *
 };                                  /* Fim da atribuicao */
 
 /* ---Funcoes--- */
-int teste       (int var, int isso, int aquilo, int tipo);                                                      /* Testa a validade da entrada do usuario de acordo com os parametros passados para a funcao */
+int teste       (int var, int isso, int aquilo, int tipo);                                          /* Testa a validade da entrada do usuario de acordo com os parametros passados para a funcao */
 void batalha    (void);                                                                                         /* Executa o jogo */
 void almirante  (int colunas, int linhas, int ***player);                                                       /* Permite o jogador posicionar suas embarcacoes no tabuleiro manualmente */
 void marinheiro (int colunas, int linhas, int ***player);                                                       /* Posiciona as embarcacoes do jogador aleatoriamente */
